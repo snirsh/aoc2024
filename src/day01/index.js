@@ -2,14 +2,19 @@ import run from "aocrunner"
 
 const parseInput = (rawInput) => rawInput
 
-const part1 = (rawInput) => {
-  const input = parseInput(rawInput)
-  const lists = input.split('\n').reduce((acc, row) => {
+function createLeftRight(input) {
+  const lists = input.split("\n").reduce((acc, row) => {
     const [a, b] = row.split(/\s+/)
     acc[0].push(parseInt(a))
     acc[1].push(parseInt(b))
     return acc
-  }, [[],[]])
+  }, [[], []])
+  return lists
+}
+
+const part1 = (rawInput) => {
+  const input = parseInput(rawInput)
+  const lists = createLeftRight(input)
   const leftListSorted = lists[0].sort((a, b) => b-a)
   const rightListSorted = lists[1].sort((a, b) => b-a)
   const results = leftListSorted.map((val, i) => Math.abs(val - rightListSorted[i]))
@@ -20,12 +25,7 @@ const part1 = (rawInput) => {
 
 const part2 = (rawInput) => {
   const input = parseInput(rawInput)
-  const lists = input.split('\n').reduce((acc, row) => {
-    const [a, b] = row.split(/\s+/)
-    acc[0].push(parseInt(a))
-    acc[1].push(parseInt(b))
-    return acc
-  }, [[],[]])
+  const lists = createLeftRight(input)
   const leftListSorted = lists[0].sort((a, b) => a-b)
   const rightListSorted = lists[1].sort((a, b) => a-b)
   let result = 0

@@ -10,13 +10,13 @@
         "attempts": [
           "NaN"
         ],
-        "time": 0.994375
+        "time": 0.658042
       },
       "part2": {
         "solved": true,
         "result": "23126924",
         "attempts": [],
-        "time": 7.51475
+        "time": 7.3715
       }
     },
     {
