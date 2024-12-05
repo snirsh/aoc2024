@@ -1,6 +1,21 @@
 import run from "aocrunner"
 
-const solve = (input, part=1) => input.split('\n\n').map((p,i) => i ? p.split('\n').map(x => x.split(',').map(Number)) : p.split('\n').map(r => r.split('|').map(Number)).reduce((a,[x,y]) => ({...a, [x]: [...(a[x]||[]), y]}), {})).reduce((rules,pages) => pages.map(p => [p, [...p].sort((a,b) => rules[a]?.includes(b) ? -1 : 1)]).filter(([o,s]) => part === 1 ? JSON.stringify(o) === JSON.stringify(s) : JSON.stringify(o) !== JSON.stringify(s)).map(([o,s]) => part === 1 ? o : s).map(p => p[Math.floor(p.length/2)])).reduce((a,v) => a+v, 0)
+const solve = (input, part = 1) => input
+  .split("\n\n")
+  .map((p, i) => i ?
+    p.split("\n").map(x => x.split(",").map(Number)) :
+    p.split("\n").map(r => r.split("|").map(Number))
+      .reduce((a, [x, y]) => ({
+            ...a, [x]: [...(a[x] || []), y],
+      }), {})) // create a map of pages and the rules sets which are { number: [numbersThatHaveToBeAfter] ...}
+  .reduce((rules, pages) =>
+    pages
+      .map(page =>
+        [page, [...page].sort((a, b) => rules[a]?.includes(b) ? -1 : 1)]) // sort the pages based on the rules
+      .filter(([originalPage, sortedPage]) => part === 1 ? JSON.stringify(originalPage) === JSON.stringify(sortedPage) : JSON.stringify(originalPage) !== JSON.stringify(sortedPage)) // p1 : if the original page is the same as the sorted page, it means that the page is sorted, p2: if the original page is not the same as the sorted page, it means that the page is not sorted
+      .map(([originalPage, sortedPage]) => part === 1 ? originalPage : sortedPage) // p1: return the original page, p2: return the sorted page
+      .map(p => p[Math.floor(p.length / 2)])) // get the middle number of the page
+  .reduce((a, v) => a + v, 0) // sum all the middle numbers of the pages
 
 const part1 = (rawInput) => {
   return solve(rawInput)
