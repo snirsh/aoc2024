@@ -1,74 +1,13 @@
 import run from "aocrunner"
 
-const parseInput = (rawInput) => rawInput
+const solve = (input, part=1) => input.split('\n\n').map((p,i) => i ? p.split('\n').map(x => x.split(',').map(Number)) : p.split('\n').map(r => r.split('|').map(Number)).reduce((a,[x,y]) => ({...a, [x]: [...(a[x]||[]), y]}), {})).reduce((rules,pages) => pages.map(p => [p, [...p].sort((a,b) => rules[a]?.includes(b) ? -1 : 1)]).filter(([o,s]) => part === 1 ? JSON.stringify(o) === JSON.stringify(s) : JSON.stringify(o) !== JSON.stringify(s)).map(([o,s]) => part === 1 ? o : s).map(p => p[Math.floor(p.length/2)])).reduce((a,v) => a+v, 0)
 
 const part1 = (rawInput) => {
-  const [p1, p2] = parseInput(rawInput).split("\n\n").map(group => group.split("\n"))
-  const rules = p1.map(r => r.split("|").map(Number))
-  const pages = p2.map(page => page.split(",").map(Number))
-  const rulesTree = {}
-  let res = 0
-
-  for (const [a, b] of rules) {
-    if (!rulesTree[a]) {
-      rulesTree[a] = []
-    }
-    rulesTree[a].push(b)
-  }
-  for (const page of pages) {
-    let isValid = true
-    for (let i = 0; i < page.length - 1; i++) {
-      for (let j = i; j < page.length; j++) {
-        if (rulesTree[page[j]]?.includes(page[i])) {
-          isValid = false
-          break
-        }
-      }
-      if (!isValid) {
-        break
-      }
-    }
-    if (isValid) {
-      res += page[Math.floor(page.length / 2)]
-    }
-  }
-
-  return res
+  return solve(rawInput)
 }
 
 const part2 = (rawInput) => {
-  const [p1, p2] = parseInput(rawInput).split("\n\n").map(group => group.split("\n"))
-  const rules = p1.map(r => r.split("|").map(Number))
-  const pages = p2.map(page => page.split(",").map(Number))
-  const rulesTree = {}
-  let res = 0
-
-  for (const [a, b] of rules) {
-    if (!rulesTree[a]) {
-      rulesTree[a] = []
-    }
-    rulesTree[a].push(b)
-  }
-  for (const page of pages) {
-    let isValid = true
-    for (let i = 0; i < page.length - 1; i++) {
-      for (let j = i; j < page.length; j++) {
-        if (rulesTree[page[j]]?.includes(page[i])) {
-          isValid = false
-          break
-        }
-      }
-      if (!isValid) {
-        break
-      }
-    }
-    if (!isValid) {
-      const newPage = page.sort((a, b) => rulesTree[a]?.includes(b) ? 1 : -1)
-      res += newPage[Math.floor(newPage.length / 2)]
-    }
-  }
-
-  return res
+  return solve(rawInput, 2)
 }
 
 run({
