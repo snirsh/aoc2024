@@ -1,4 +1,5 @@
 import run from "aocrunner"
+import { visualizeRun } from "./visualizerUtil.js"
 
 const parseInput = (rawInput) => rawInput.split("\n")
 
@@ -30,12 +31,14 @@ function findGuardStart(grid) {
   return null
 }
 
-function simulate(grid, startPos, startDir) {
+function simulate(grid, startPos, startDir, obstruction, visualize = true) {
   let dir = startDir
   let pos = startPos.slice()
 
   const visitedStates = new Set()
   visitedStates.add(`${pos[0]},${pos[1]},${dir}`)
+
+  const path = visualize ? [] : null
 
   while (true) {
     const [dr, dc] = DIR_TO_COORD[dir]
@@ -48,9 +51,13 @@ function simulate(grid, startPos, startDir) {
     if (grid[nextPos[0]][nextPos[1]] === "#") {
       dir = turnRight(dir)
     } else {
+      if (visualize) {
+        path.push({ r: nextPos[0], c: nextPos[1], dir })
+      }
       pos = nextPos
       const stateKey = `${pos[0]},${pos[1]},${dir}`
       if (visitedStates.has(stateKey)) {
+        visualize? console.log(visualizeRun(grid, path, obstruction), '\n') : null
         return true
       }
       visitedStates.add(stateKey)
@@ -58,7 +65,7 @@ function simulate(grid, startPos, startDir) {
   }
 }
 
-const part1 = (rawInput) => {
+const part1 = (rawInput, visualize = false) => {
   const input = parseInput(rawInput)
   const grid = input.map(row => row.split(''))
 
@@ -71,26 +78,36 @@ const part1 = (rawInput) => {
   let dir = startDir
   let pos = startPos.slice()
 
+  const path = visualize ? [] : null
+
   while (true) {
     const [dr, dc] = DIR_TO_COORD[dir]
     const nextPos = [pos[0] + dr, pos[1] + dc]
 
     if (outOfBounds(grid, nextPos)) {
+      visualize ? path.push({ r: nextPos[0], c: nextPos[1], dir }) : null
       break
     }
 
     if (grid[nextPos[0]][nextPos[1]] === "#") {
       dir = turnRight(dir)
     } else {
+      if (visualize) {
+        path.push({ r: nextPos[0], c: nextPos[1], dir })
+      }
       pos = nextPos
       visitedPositions.add(`${pos[0]},${pos[1]}`)
     }
   }
 
+  if (visualize) {
+    console.log(visualizeRun(grid, path), '\n')
+  }
+
   return visitedPositions.size
 }
 
-const part2 = (rawInput) => {
+const part2 = (rawInput, visualize = false) => {
   const input = parseInput(rawInput)
   const grid = input.map(row => row.split(''))
 
@@ -113,7 +130,7 @@ const part2 = (rawInput) => {
     const original = grid[cr][cc]
     grid[cr][cc] = '#'
 
-    const isLoop = simulate(grid, startPos, startDir)
+    const isLoop = simulate(grid, startPos, startDir, [cr, cc], visualize)
 
     if (isLoop) {
       loopCount++
