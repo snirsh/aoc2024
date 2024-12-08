@@ -23,6 +23,7 @@ const calculateAntinodes = (coords) => {
       const dr = r2 - r1
       const dc = c2 - c1
 
+      // Calculate the two antinodes according to the puzzle definition
       const antinode1 = { r: r1 - dr, c: c1 - dc }
       const antinode2 = { r: r2 + dr, c: c2 + dc }
 
@@ -71,7 +72,7 @@ const part2 = (rawInput) => {
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       const cell = input[r][c]
-      if (cell !== '.') {
+      if (cell !== '.' && cell !== '#') {
         antennas[cell] ??= []
         antennas[cell].push({ r, c })
       }
@@ -164,21 +165,23 @@ run({
 ..........
 ....#.....
 ..........`,
-        expected: 6,
+        expected: 9,
       },
       {
-        input: `..........
-..........
-..........
-....a.....
-..........
-.....a....
-..........
-..........
-..........
-..........`,
-        expected: 34
-      }
+        input: `##....#....#
+.#.#....0...
+..#.#0....#.
+..##...0....
+....0....#..
+.#...#A....#
+...#..#.....
+#....#.#....
+..#.....A...
+....#....A..
+.#........#.
+...#......##`,
+        expected: 34,
+      },
     ],
     solution: part2,
   },
