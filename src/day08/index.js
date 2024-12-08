@@ -2,16 +2,6 @@ import run from "aocrunner"
 
 const parseInput = (rawInput) => rawInput.split('\n').map(row => row.split(''))
 
-const getDotsInLine = (r1, c1, r2, c2, dist) => {
-  const dr = r2 - r1
-  const dc = c2 - c1
-  const dots = []
-  for (let i = 1; i < dist; i++) {
-    dots.push({ r: r1 + dr * i / dist, c: c1 + dc * i / dist })
-  }
-  return dots
-}
-
 const calculateAntinodes = (coords) => {
   const antinodes = []
 
@@ -23,7 +13,6 @@ const calculateAntinodes = (coords) => {
       const dr = r2 - r1
       const dc = c2 - c1
 
-      // Calculate the two antinodes according to the puzzle definition
       const antinode1 = { r: r1 - dr, c: c1 - dc }
       const antinode2 = { r: r2 + dr, c: c2 + dc }
 
@@ -32,6 +21,17 @@ const calculateAntinodes = (coords) => {
   }
 
   return antinodes
+}
+
+function gcd(a, b) {
+  a = Math.abs(a)
+  b = Math.abs(b)
+  while (b !== 0) {
+    const t = b
+    b = a % b
+    a = t
+  }
+  return a
 }
 
 const part1 = (rawInput) => {
@@ -50,17 +50,6 @@ const part1 = (rawInput) => {
   const antiNodes = Object.values(antennas).map(calculateAntinodes).flat().filter(({ r, c }) => r >= 0 && c >= 0 && r < input.length && c < input[0].length).sort((a, b) => a.r - b.r || a.c - b.c)
 
   return new Set(antiNodes.map(({ r, c }) => `${r},${c}`)).size
-}
-
-function gcd(a, b) {
-  a = Math.abs(a)
-  b = Math.abs(b)
-  while (b !== 0) {
-    const t = b
-    b = a % b
-    a = t
-  }
-  return a
 }
 
 const part2 = (rawInput) => {
