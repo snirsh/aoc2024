@@ -23,17 +23,6 @@ const calculateAntinodes = (coords) => {
   return antinodes
 }
 
-function gcd(a, b) {
-  a = Math.abs(a)
-  b = Math.abs(b)
-  while (b !== 0) {
-    const t = b
-    b = a % b
-    a = t
-  }
-  return a
-}
-
 const part1 = (rawInput) => {
   const input = parseInput(rawInput)
   const antennas = {}
@@ -81,24 +70,21 @@ const part2 = (rawInput) => {
 
         const dr = r2 - r1
         const dc = c2 - c1
-        const g = gcd(dr, dc)
-        const drStep = dr / g
-        const dcStep = dc / g
 
         let rr = r1
         let cc = c1
         while (rr >= 0 && rr < rows && cc >= 0 && cc < cols) {
           antinodesSet.add(`${rr},${cc}`)
-          rr += drStep
-          cc += dcStep
+          rr += dr
+          cc += dc
         }
 
         rr = r1
         cc = c1
         while (rr >= 0 && rr < rows && cc >= 0 && cc < cols) {
           antinodesSet.add(`${rr},${cc}`)
-          rr -= drStep
-          cc -= dcStep
+          rr -= dr
+          cc -= dc
         }
       }
     }

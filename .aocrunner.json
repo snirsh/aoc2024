@@ -124,7 +124,7 @@
         "solved": true,
         "result": "311",
         "attempts": [],
-        "time": 0.3225
+        "time": 0.633042
       },
       "part2": {
         "solved": true,
@@ -133,7 +133,7 @@
           "317",
           "999"
         ],
-        "time": 0.307
+        "time": 0.293125
       }
     },
     {
