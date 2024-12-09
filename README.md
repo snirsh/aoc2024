@@ -19,7 +19,7 @@
 [![Day](https://badgen.net/badge/06/%E2%98%85%E2%98%85/green)](src/day06)
 [![Day](https://badgen.net/badge/07/%E2%98%85%E2%98%85/green)](src/day07)
 [![Day](https://badgen.net/badge/08/%E2%98%85%E2%98%85/green)](src/day08)
-![Day](https://badgen.net/badge/09/%E2%98%86%E2%98%86/gray)
+[![Day](https://badgen.net/badge/09/%E2%98%85%E2%98%85/green)](src/day09)
 ![Day](https://badgen.net/badge/10/%E2%98%86%E2%98%86/gray)
 ![Day](https://badgen.net/badge/11/%E2%98%86%E2%98%86/gray)
 ![Day](https://badgen.net/badge/12/%E2%98%86%E2%98%86/gray)
@@ -52,13 +52,13 @@ pnpm install
 ## Running in dev mode
 
 ```
-pnpm start <day>
+pnpm s <day>
 ```
 
 Example:
 
 ```
-pnpm start 1
+pnpm s 1
 ```
 
 ---
@@ -118,16 +118,16 @@ Both parts: 3894.275ms
 
 ```
 Day 08
-Time part 1: 0.519ms
-Time part 2: 0.295ms
-Both parts: 0.814ms
+Time part 1: 0.323ms
+Time part 2: 0.307ms
+Both parts: 0.629ms
 ```
 
 ```
 Day 09
-Time part 1: -
-Time part 2: -
-Both parts: -
+Time part 1: 5.529ms
+Time part 2: 1787.637ms
+Both parts: 1793.166ms
 ```
 
 ```
@@ -243,8 +243,8 @@ Both parts: -
 ```
 
 ```
-Total stars: 16/50
-Total time: 17807.197ms
+Total stars: 18/50
+Total time: 19600.178ms
 ```
 
 <!--/RESULTS-->
