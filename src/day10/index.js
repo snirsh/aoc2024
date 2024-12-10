@@ -69,8 +69,6 @@ const part2 = (rawInput) => {
 
   const dp = Array.from({ length: rows }, () => Array(cols).fill(-1))
 
-  const inBounds = (x, y) => x >= 0 && y >= 0 && x < rows && y < cols
-
   const dfs = (x, y) => {
     if (dp[x][y] !== -1) {
       return dp[x][y]
@@ -80,31 +78,11 @@ const part2 = (rawInput) => {
       return 1
     }
 
-    let ways = 0
-    for (const [dx, dy] of COORDS) {
-      const nx = x + dx
-      const ny = y + dy
-      if (
-        inBounds(nx, ny) &&
-        matrix[nx][ny] === matrix[x][y] + 1
-      ) {
-        ways += dfs(nx, ny)
-      }
-    }
-    dp[x][y] = ways
-    return ways
+    return getValidNeighbors(matrix, [x, y])
+      .reduce((acc, [dx, dy]) => acc + dfs(dx, dy), 0)
   }
 
-  let totalRating = 0
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      if (matrix[i][j] === 0) {
-        totalRating += dfs(i, j)
-      }
-    }
-  }
-
-  return totalRating
+  return findAllTrailHeads(matrix).reduce((acc, [x, y]) => acc + dfs(x, y), 0)
 }
 
 run({
