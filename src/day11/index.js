@@ -56,10 +56,6 @@ const part2 = (rawInput) => {
 run({
   part1: {
     tests: [
-      // {
-      //   input: `0 1 10 99 999`,
-      //   expected: 5,
-      // }
       {
         input: `125 17`,
         expected: 55312,
