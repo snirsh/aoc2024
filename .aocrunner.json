@@ -208,13 +208,13 @@
         "attempts": [
           "139"
         ],
-        "time": 7.084875
+        "time": 0.950875
       },
       "part2": {
         "solved": false,
         "result": "102255878088512",
         "attempts": [],
-        "time": 4.007542
+        "time": 0.747334
       }
     },
     {
