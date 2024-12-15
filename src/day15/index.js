@@ -18,7 +18,7 @@ const parseInput = (rawInput) => {
   return { grid, moves }
 }
 
-const calculateGPS = (x, y) => {
+const calculateGPS = ({ x, y }) => {
   return 100 * y + x
 }
 
@@ -99,7 +99,7 @@ const part1 = (rawInput) => {
     position = simulateMovementP1(grid, position, move)
   }
 
-  return getAllBoxPositions(grid).map(({ x, y }) => calculateGPS(x, y)).reduce((acc, val) => acc + val, 0)
+  return getAllBoxPositions(grid).map(calculateGPS).reduce((acc, val) => acc + val, 0)
 }
 
 const fixMap = (grid) => {
@@ -185,8 +185,7 @@ const part2 = (rawInput) => {
   for (const move of moves) {
     position = simulateMovementP2(grid, position, move)
   }
-  const allBoxPositions = getAllBoxPositions(grid)
-  return allBoxPositions.reduce((acc, { x, y }) => acc + (y*100+x), 0)
+  return getAllBoxPositions(grid).map(calculateGPS).reduce((acc, val) => acc + val, 0)
 }
 
 run({
