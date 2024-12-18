@@ -13,19 +13,19 @@ const parseInput = (rawInput) => {
 
 const executeProgram = (program, initialA = 0, initialB = 0, initialC = 0) => {
   const registers = {
-    A: BigInt(initialA),
-    B: BigInt(initialB),
-    C: BigInt(initialC),
+    A: initialA,
+    B: initialB,
+    C: initialC,
   }
   const output = []
   let ip = 0
 
   const getComboValue = (operand) => {
-    if (operand <= 3) return BigInt(operand)
+    if (operand <= 3) return operand
     if (operand === 4) return registers.A
     if (operand === 5) return registers.B
     if (operand === 6) return registers.C
-    return BigInt(0)
+    return 0
   }
 
   while (ip < program.length) {
@@ -37,13 +37,13 @@ const executeProgram = (program, initialA = 0, initialB = 0, initialC = 0) => {
         registers.A = registers.A >> getComboValue(operand)
         break
       case 1: // bxl
-        registers.B ^= BigInt(operand)
+        registers.B ^= operand
         break
       case 2: // bst
-        registers.B = getComboValue(operand) % 8n
+        registers.B = getComboValue(operand) % 8
         break
       case 3: // jnz
-        if (registers.A !== 0n) {
+        if (registers.A !== 0) {
           ip = operand
           continue
         }
@@ -52,7 +52,7 @@ const executeProgram = (program, initialA = 0, initialB = 0, initialC = 0) => {
         registers.B ^= registers.C
         break
       case 5: // out
-        output.push(Number(getComboValue(operand) % 8n))
+        output.push(Number(getComboValue(operand) % 8))
         break
       case 6: // bdv
         registers.B = registers.A >> getComboValue(operand)
@@ -75,7 +75,7 @@ const part1 = (rawInput) => {
 const part2 = (rawInput) => {
   const { program } = parseInput(rawInput)
   const len = program.length
-  let minValid = BigInt(8) ** BigInt(len+1)
+  let minValid = 8 ** (len+1)
 
   const check = (depth, score) => {
     if (depth === len) {
@@ -84,15 +84,16 @@ const part2 = (rawInput) => {
     }
 
     for (let i = 0; i < 8; i++) {
-      const nextScore = BigInt(i) + BigInt(8) * score
-      const result = executeProgram(program, Number(nextScore))
+      const nextScore = i + 8 * score
+      const result = executeProgram(program, Number(nextScore)) // 1, 3, 4, 5, 6, 7
       if (result.split(',')[0] === program[(len-1) - depth].toString()) {
+        console.log('found', result, nextScore)
         check(depth + 1, nextScore)
       }
     }
   }
 
-  check(0, BigInt(0))
+  check(0, 0)
   return Number(minValid)
 }
 
