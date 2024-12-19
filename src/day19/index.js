@@ -8,44 +8,50 @@ const parseInput = (rawInput) => {
   }
 }
 
-const makeDesignSolver = (countAll = false) => {
-  return (design, patterns, memo = new Map()) => {
-    if (design === '') return countAll ? 1 : true
-    if (memo.has(design)) return memo.get(design)
-    
-    let result = countAll ? 0 : false
-    for (const pattern of patterns) {
-      if (design.startsWith(pattern)) {
-        const subResult = makeDesignSolver(countAll)(design.slice(pattern.length), patterns, memo)
-        if (countAll) {
-          result += subResult
-        } else if (subResult) {
-          result = true
-          break
-        }
-      }
+const createPatternMatcher = (shouldCountAll = false) => {
+  const matchPattern = (design, availablePatterns, cache = new Map()) => {
+    if (design === '') {
+      return shouldCountAll ? 1 : true
     }
     
-    memo.set(design, result)
-    return result
+    if (!cache.has(design)) {
+      let matchResult = shouldCountAll ? 0 : false
+      
+      for (const pattern of availablePatterns) {
+        if (design.startsWith(pattern)) {
+          const remainingDesign = design.slice(pattern.length)
+          const subPatternResult = matchPattern(remainingDesign, availablePatterns, cache)
+          
+          if (shouldCountAll) {
+            matchResult += subPatternResult
+          } else if (subPatternResult) {
+            matchResult = true
+            break
+          }
+        }
+      }
+      
+      cache.set(design, matchResult)
+    }
+    return cache.get(design)
   }
+  
+  return matchPattern
 }
 
 const part1 = (rawInput) => {
   const input = parseInput(rawInput)
-  const canMakeDesign = makeDesignSolver(false)
 
   return input.designs.reduce((count, design) => {
-    return count + (canMakeDesign(design, input.patterns) ? 1 : 0)
+    return count + (+createPatternMatcher(false)(design, input.patterns))
   }, 0)
 }
 
 const part2 = (rawInput) => {
   const input = parseInput(rawInput)
-  const countWaysToMakeDesign = makeDesignSolver(true)
 
   return input.designs.reduce((sum, design) => {
-    return sum + countWaysToMakeDesign(design, input.patterns)
+    return sum + createPatternMatcher(true)(design, input.patterns)
   }, 0)
 }
 
