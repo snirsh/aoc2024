@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "aocrunner day",
+    "start:prompt": "read -p 'Enter day: ' day && pnpm start $day",
     "format": "prettier -w src",
     "update:readme": "aocrunner update:readme"
   },
