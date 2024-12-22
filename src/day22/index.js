@@ -1,21 +1,16 @@
 import run from "aocrunner"
 
-const calculateNextSecret = (secret, cache = new Map()) => {
-  if (cache.has(secret)) {
-    return cache.get(secret)
-  }
-
+const calculateNextSecret = (secret) => {
   let result = secret
   result ^= (result * 64) % 16777216
   result ^= Math.floor(result / 32)
   result ^= (result * 2048) % 16777216
 
-  cache.set(secret, result)
   return result % 16777216
 }
 
 const parseInput = (rawInput) =>
-  rawInput.split("\n").filter(Boolean).map(Number)
+  rawInput.split("\n").map(Number)
 
 const part1 = (rawInput) => {
   const initialSecrets = parseInput(rawInput)
