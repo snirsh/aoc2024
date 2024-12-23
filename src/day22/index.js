@@ -9,8 +9,7 @@ const calculateNextSecret = (secret) => {
   return result % 16777216
 }
 
-const parseInput = (rawInput) =>
-  rawInput.split("\n").map(Number)
+const parseInput = (rawInput) => rawInput.split("\n").map(Number)
 
 const part1 = (rawInput) => {
   const initialSecrets = parseInput(rawInput)
