@@ -1,19 +1,29 @@
 import run from "aocrunner"
 
-const parseInput = (rawInput) => rawInput.split('\n')
+const parseInput = (rawInput) => rawInput.split("\n")
 
 const POSITIONS = {
-  "7": [0, 0], "8": [0, 1], "9": [0, 2],
-  "4": [1, 0], "5": [1, 1], "6": [1, 2],
-  "1": [2, 0], "2": [2, 1], "3": [2, 2],
-  "0": [3, 1], "A": [3, 2],
-  "^": [0, 1], "a": [0, 2],
-  "<": [1, 0], "v": [1, 1], ">": [1, 2],
+  7: [0, 0],
+  8: [0, 1],
+  9: [0, 2],
+  4: [1, 0],
+  5: [1, 1],
+  6: [1, 2],
+  1: [2, 0],
+  2: [2, 1],
+  3: [2, 2],
+  0: [3, 1],
+  A: [3, 2],
+  "^": [0, 1],
+  a: [0, 2],
+  "<": [1, 0],
+  v: [1, 1],
+  ">": [1, 2],
 }
 
 const DIRECTIONS = {
   "^": [-1, 0],
-  "v": [1, 0],
+  v: [1, 0],
   "<": [0, -1],
   ">": [0, 1],
 }
@@ -50,7 +60,7 @@ const sequenceToMoveset = (start, end, avoid) => {
   const allPerms = permutationsOf(moves)
 
   const validSequences = allPerms
-    .filter(perm => {
+    .filter((perm) => {
       let pos = [...start]
       for (const m of perm) {
         pos[0] += DIRECTIONS[m][0]
@@ -59,7 +69,7 @@ const sequenceToMoveset = (start, end, avoid) => {
       }
       return true
     })
-    .map(perm => perm.join("") + "a")
+    .map((perm) => perm.join("") + "a")
 
   return validSequences.length ? validSequences : ["a"]
 }
@@ -84,14 +94,15 @@ const minLength = (seq, limit = 2, depth = 0) => {
     let best = Infinity
 
     if (depth >= limit) {
-      best = Math.min(...movesets.map(ms => ms.length))
+      best = Math.min(...movesets.map((ms) => ms.length))
     } else {
       for (const ms of movesets) {
         best = Math.min(best, minLength(ms, limit, depth + 1))
       }
     }
 
-    totalLength += best === Infinity ? Math.min(...movesets.map(ms => ms.length)) : best
+    totalLength +=
+      best === Infinity ? Math.min(...movesets.map((ms) => ms.length)) : best
     currentPos = nextPos
   }
 

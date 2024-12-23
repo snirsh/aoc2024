@@ -2,7 +2,11 @@ import run from "aocrunner"
 
 const parseInput = (rawInput) => {
   const machines = []
-  const lines = rawInput.trim().split("\n").map(line => line.trim()).filter(line => line !== "")
+  const lines = rawInput
+    .trim()
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line !== "")
 
   let currentMachine = {}
 
@@ -64,7 +68,14 @@ const part1 = (rawInput) => {
 
   for (const machine of machines) {
     const { buttonA, buttonB, prize } = machine
-    const solution = findPresses(buttonA.x, buttonA.y, buttonB.x, buttonB.y, prize.x, prize.y)
+    const solution = findPresses(
+      buttonA.x,
+      buttonA.y,
+      buttonB.x,
+      buttonB.y,
+      prize.x,
+      prize.y,
+    )
 
     if (solution) {
       const [A, B] = solution
@@ -82,7 +93,14 @@ const part2 = (rawInput) => {
 
   for (const machine of machines) {
     const { buttonA, buttonB, prize } = machine
-    const solution = findPresses(buttonA.x, buttonA.y, buttonB.x, buttonB.y, prize.x + OFFSET, prize.y + OFFSET)
+    const solution = findPresses(
+      buttonA.x,
+      buttonA.y,
+      buttonB.x,
+      buttonB.y,
+      prize.x + OFFSET,
+      prize.y + OFFSET,
+    )
 
     if (solution) {
       const [A, B] = solution

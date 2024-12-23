@@ -1,16 +1,18 @@
 import run from "aocrunner"
 
-const parseInput = (rawInput) => rawInput.split(' ')
-  .map(Number)
-  .reduce((acc, stone) => {
-    acc[stone] ??= 0
-    acc[stone]++
-    return acc
-  }, {})
+const parseInput = (rawInput) =>
+  rawInput
+    .split(" ")
+    .map(Number)
+    .reduce((acc, stone) => {
+      acc[stone] ??= 0
+      acc[stone]++
+      return acc
+    }, {})
 
 const calculateNewStone = (stone) => {
   const stoneStr = stone.toString()
-  if (stone === '0') {
+  if (stone === "0") {
     return [1]
   }
   if (stoneStr.length % 2 === 0) {
@@ -24,7 +26,7 @@ const calculateNewStone = (stone) => {
 }
 
 const processStones = (initialStones, targetBlinks) => {
-  let stones = {...initialStones}
+  let stones = { ...initialStones }
 
   for (let blinks = 1; blinks <= targetBlinks; blinks++) {
     const newStones = {}
@@ -59,7 +61,7 @@ run({
       {
         input: `125 17`,
         expected: 55312,
-      }
+      },
     ],
     solution: part1,
   },

@@ -9,8 +9,12 @@ const part1 = (rawInput) => {
   const input = parseInput(rawInput)
   const mulMatches = input.match(mulRegex)
   const result = mulMatches.reduce((acc, match) => {
-    const [a,b] = match.replace('mul', '').replace('(' ,'').replace(')', '').split(',')
-    return acc + a*b
+    const [a, b] = match
+      .replace("mul", "")
+      .replace("(", "")
+      .replace(")", "")
+      .split(",")
+    return acc + a * b
   }, 0)
 
   return result
@@ -22,14 +26,18 @@ const part2 = (rawInput) => {
   let isMulEnabled = true
   let result = 0
   for (const match of mulMatches) {
-    if (match.includes('don\'t')) {
+    if (match.includes("don't")) {
       isMulEnabled = false
       continue
-    } else if(match.includes('do')) {
+    } else if (match.includes("do")) {
       isMulEnabled = true
       continue
     } else if (isMulEnabled) {
-      const [a, b] = match.replace('mul', '').replace('(', '').replace(')', '').split(',')
+      const [a, b] = match
+        .replace("mul", "")
+        .replace("(", "")
+        .replace(")", "")
+        .split(",")
       result += a * b
     }
   }

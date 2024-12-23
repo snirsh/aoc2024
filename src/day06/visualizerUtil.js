@@ -1,5 +1,5 @@
 function visualizeRun(grid, path, obstruction = null) {
-  const visualGrid = grid.map(row => row.slice())
+  const visualGrid = grid.map((row) => row.slice())
 
   function getMoveDir(pr, pc, r, c) {
     const dr = r - pr
@@ -54,7 +54,7 @@ function visualizeRun(grid, path, obstruction = null) {
     }
   }
 
-  return visualGrid.map(row => row.join('')).join('\n')
+  return visualGrid.map((row) => row.join("")).join("\n")
 }
 
 export { visualizeRun }

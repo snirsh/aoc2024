@@ -1,6 +1,7 @@
 import run from "aocrunner"
 
-const parseInput = (rawInput) => rawInput.split('\n').map(row => row.split(''))
+const parseInput = (rawInput) =>
+  rawInput.split("\n").map((row) => row.split(""))
 
 const calculateAntinodes = (coords) => {
   const antinodes = []
@@ -30,13 +31,19 @@ const part1 = (rawInput) => {
   for (let r = 0; r < input.length; r++) {
     for (let c = 0; c < input[r].length; c++) {
       const cell = input[r][c]
-      if (cell !== '.') {
+      if (cell !== ".") {
         antennas[cell] ??= []
         antennas[cell].push({ r, c })
       }
     }
   }
-  const antiNodes = Object.values(antennas).map(calculateAntinodes).flat().filter(({ r, c }) => r >= 0 && c >= 0 && r < input.length && c < input[0].length).sort((a, b) => a.r - b.r || a.c - b.c)
+  const antiNodes = Object.values(antennas)
+    .map(calculateAntinodes)
+    .flat()
+    .filter(
+      ({ r, c }) => r >= 0 && c >= 0 && r < input.length && c < input[0].length,
+    )
+    .sort((a, b) => a.r - b.r || a.c - b.c)
 
   return new Set(antiNodes.map(({ r, c }) => `${r},${c}`)).size
 }
@@ -50,7 +57,7 @@ const part2 = (rawInput) => {
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       const cell = input[r][c]
-      if (cell !== '.' && cell !== '#') {
+      if (cell !== "." && cell !== "#") {
         antennas[cell] ??= []
         antennas[cell].push({ r, c })
       }

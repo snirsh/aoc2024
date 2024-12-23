@@ -11,9 +11,9 @@ function getStartPos(grid) {
 }
 
 const parseInput = (rawInput) => {
-  const [map, movements] = rawInput.split('\n\n')
-  const grid = map.split('\n').map(line => line.split(''))
-  const moves = movements.replace(/\n/g, '').split('')
+  const [map, movements] = rawInput.split("\n\n")
+  const grid = map.split("\n").map((line) => line.split(""))
+  const moves = movements.replace(/\n/g, "").split("")
 
   return { grid, moves }
 }
@@ -24,55 +24,68 @@ const calculateGPS = ({ x, y }) => {
 
 const dirToVector = (dir) => {
   switch (dir) {
-    case '^':
+    case "^":
       return { x: 0, y: -1 }
-    case 'v':
+    case "v":
       return { x: 0, y: 1 }
-    case '<':
+    case "<":
       return { x: -1, y: 0 }
-    case '>':
+    case ">":
       return { x: 1, y: 0 }
   }
 }
 
 const simulateMovementP1 = (grid, position, direction, part = 1) => {
   const dirVector = dirToVector(direction)
-  const newPosition = { x: position.x + dirVector.x, y: position.y + dirVector.y }
+  const newPosition = {
+    x: position.x + dirVector.x,
+    y: position.y + dirVector.y,
+  }
 
-  const inBounds = (x, y) => y >= 0 && y < grid.length && x >= 0 && x < grid[0].length
+  const inBounds = (x, y) =>
+    y >= 0 && y < grid.length && x >= 0 && x < grid[0].length
 
-  if (!inBounds(newPosition.x, newPosition.y) || grid[newPosition.y][newPosition.x] === '#') {
+  if (
+    !inBounds(newPosition.x, newPosition.y) ||
+    grid[newPosition.y][newPosition.x] === "#"
+  ) {
     return position
   }
 
-  if (grid[newPosition.y][newPosition.x] === 'O') {
-    const dx = dirVector.x, dy = dirVector.y
-    let checkX = newPosition.x, checkY = newPosition.y
+  if (grid[newPosition.y][newPosition.x] === "O") {
+    const dx = dirVector.x,
+      dy = dirVector.y
+    let checkX = newPosition.x,
+      checkY = newPosition.y
     const boxChain = []
 
-    while (inBounds(checkX, checkY) && grid[checkY][checkX] === 'O') {
+    while (inBounds(checkX, checkY) && grid[checkY][checkX] === "O") {
       boxChain.push({ x: checkX, y: checkY })
       checkX += dx
       checkY += dy
     }
 
-    if (!inBounds(checkX, checkY) || grid[checkY][checkX] === '#' || grid[checkY][checkX] === 'O') {
+    if (
+      !inBounds(checkX, checkY) ||
+      grid[checkY][checkX] === "#" ||
+      grid[checkY][checkX] === "O"
+    ) {
       return position
     }
 
     for (let i = boxChain.length - 1; i >= 0; i--) {
       const { x: bx, y: by } = boxChain[i]
-      grid[by][bx] = '.'
-      grid[by + dy][bx + dx] = 'O'
+      grid[by][bx] = "."
+      grid[by + dy][bx + dx] = "O"
     }
 
-    grid[position.y][position.x] = '.'
-    grid[newPosition.y][newPosition.x] = '@'
+    grid[position.y][position.x] = "."
+    grid[newPosition.y][newPosition.x] = "@"
     return newPosition
   }
 
-  grid[position.y][position.x] = '.'
-  grid[newPosition.y][newPosition.x] = '@'
+  grid[position.y][position.x] = "."
+  grid[newPosition.y][newPosition.x] = "@"
   return newPosition
 }
 
@@ -80,7 +93,7 @@ const getAllBoxPositions = (grid) => {
   const boxPositions = []
   for (let x = 0; x < grid[0].length; x++) {
     for (let y = 0; y < grid.length; y++) {
-      if (grid[y][x] === 'O' || grid[y][x] === '[') {
+      if (grid[y][x] === "O" || grid[y][x] === "[") {
         boxPositions.push({ x, y })
       }
     }
@@ -89,7 +102,7 @@ const getAllBoxPositions = (grid) => {
 }
 
 const visualize = (grid) => {
-  console.log(grid.map(row => row.join('')).join('\n'))
+  console.log(grid.map((row) => row.join("")).join("\n"))
 }
 
 const part1 = (rawInput) => {
@@ -99,7 +112,9 @@ const part1 = (rawInput) => {
     position = simulateMovementP1(grid, position, move)
   }
 
-  return getAllBoxPositions(grid).map(calculateGPS).reduce((acc, val) => acc + val, 0)
+  return getAllBoxPositions(grid)
+    .map(calculateGPS)
+    .reduce((acc, val) => acc + val, 0)
 }
 
 const fixMap = (grid) => {
@@ -114,17 +129,17 @@ const fixMap = (grid) => {
     const newRow = []
     for (let x = 0; x < grid[0].length; x++) {
       switch (grid[y][x]) {
-        case '#':
-          newRow.push('#', '#')
+        case "#":
+          newRow.push("#", "#")
           break
-        case 'O':
-          newRow.push('[', ']')
+        case "O":
+          newRow.push("[", "]")
           break
-        case '.':
-          newRow.push('.', '.')
+        case ".":
+          newRow.push(".", ".")
           break
-        case '@':
-          newRow.push('@', '.')
+        case "@":
+          newRow.push("@", ".")
           break
       }
     }
@@ -134,18 +149,21 @@ const fixMap = (grid) => {
 }
 
 const tryMove = (grid, moveQueue, y, x, dy, dx) => {
-  if (grid[y+dy][x+dx] === '#') return false
-  if (dy === 0 && (grid[y+dy][x+dx] === '[' || grid[y+dy][x+dx] === ']')) {
-    if (!tryMove(grid, moveQueue, y+dy,x+dx,dy,dx)) return false
-  } else if (grid[y+dy][x+dx] === '[') {
-    if (!tryMove(grid, moveQueue, y+dy,x+dx,dy,dx)) return false
-    if (!tryMove(grid, moveQueue, y+dy,x+1,dy,dx)) return false
-  } else if(grid[y+dy][x+dx] === ']') {
-    if (!tryMove(grid, moveQueue, y+dy,x+dx,dy,dx)) return false
-    if (!tryMove(grid, moveQueue, y+dy,x-1,dy,dx)) return false
+  if (grid[y + dy][x + dx] === "#") return false
+  if (
+    dy === 0 &&
+    (grid[y + dy][x + dx] === "[" || grid[y + dy][x + dx] === "]")
+  ) {
+    if (!tryMove(grid, moveQueue, y + dy, x + dx, dy, dx)) return false
+  } else if (grid[y + dy][x + dx] === "[") {
+    if (!tryMove(grid, moveQueue, y + dy, x + dx, dy, dx)) return false
+    if (!tryMove(grid, moveQueue, y + dy, x + 1, dy, dx)) return false
+  } else if (grid[y + dy][x + dx] === "]") {
+    if (!tryMove(grid, moveQueue, y + dy, x + dx, dy, dx)) return false
+    if (!tryMove(grid, moveQueue, y + dy, x - 1, dy, dx)) return false
   }
-  moveQueue[[y+dy,x+dx]] = grid[y][x]
-  if(!moveQueue[[y,x]]) moveQueue[[y,x]] = '.'
+  moveQueue[[y + dy, x + dx]] = grid[y][x]
+  if (!moveQueue[[y, x]]) moveQueue[[y, x]] = "."
   return true
 }
 
@@ -155,37 +173,39 @@ function simulateMovementP2(grid, position, move) {
 
   const newPosition = { x: x + dx, y: y + dy }
 
-  if (grid[newPosition.y][newPosition.x] === '#') {
+  if (grid[newPosition.y][newPosition.x] === "#") {
     return position
   }
-  if (grid[newPosition.y][newPosition.x] === '.') {
-    grid[y][x] = '.'
-    grid[newPosition.y][newPosition.x] = '@'
+  if (grid[newPosition.y][newPosition.x] === ".") {
+    grid[y][x] = "."
+    grid[newPosition.y][newPosition.x] = "@"
     return newPosition
   }
   let moveQueue = {}
   const shouldMove = tryMove(grid, moveQueue, y, x, dy, dx)
   if (!shouldMove) return position
   for (const [pos, tile] of Object.entries(moveQueue)) {
-    const [y, x] = pos.split(',').map(Number)
+    const [y, x] = pos.split(",").map(Number)
     grid[y][x] = tile
   }
-  if (grid[newPosition.y][newPosition.x] === '.') {
-    grid[y][x] = '.'
-    grid[newPosition.y][newPosition.x] = '@'
+  if (grid[newPosition.y][newPosition.x] === ".") {
+    grid[y][x] = "."
+    grid[newPosition.y][newPosition.x] = "@"
   }
   return newPosition
 }
 
 const part2 = (rawInput) => {
-  const {grid: oldGrid, moves} = parseInput(rawInput)
+  const { grid: oldGrid, moves } = parseInput(rawInput)
   const grid = fixMap(oldGrid)
 
   let position = getStartPos(grid)
   for (const move of moves) {
     position = simulateMovementP2(grid, position, move)
   }
-  return getAllBoxPositions(grid).map(calculateGPS).reduce((acc, val) => acc + val, 0)
+  return getAllBoxPositions(grid)
+    .map(calculateGPS)
+    .reduce((acc, val) => acc + val, 0)
 }
 
 run({

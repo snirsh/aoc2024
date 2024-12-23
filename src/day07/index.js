@@ -1,23 +1,23 @@
 import run from "aocrunner"
 
 const parseInput = (rawInput) => rawInput
-const splitRows = (input) => input.split('\n')
+const splitRows = (input) => input.split("\n")
 
 const solveNumbers = (numbers, operation) => {
-  if (operation === '+') {
+  if (operation === "+") {
     return numbers.reduce((a, b) => a + b, 0)
   }
-  if (operation === '*') {
+  if (operation === "*") {
     return numbers.reduce((a, b) => a * b, 1)
   }
-  if (operation === '||') {
-    return +numbers.reduce((a, b) => a+b, "")
+  if (operation === "||") {
+    return +numbers.reduce((a, b) => a + b, "")
   }
 }
 
 const generateOperatorCombinations = (numOperators, part = 1) => {
   const combinations = []
-  const operators = part === 1 ? ['+', '*'] : ['+', '*', '||']
+  const operators = part === 1 ? ["+", "*"] : ["+", "*", "||"]
 
   function backtrack(current) {
     if (current.length === numOperators) {
@@ -41,11 +41,11 @@ function evaluateExpression(numbers, operators) {
   for (let i = 0; i < operators.length; i++) {
     const op = operators[i]
     const num = numbers[i + 1]
-    if (op === '+') {
+    if (op === "+") {
       result += num
-    } else if (op === '*') {
+    } else if (op === "*") {
       result *= num
-    } else if (op === '||') {
+    } else if (op === "||") {
       result = solveNumbers([result, num], op)
     }
   }
@@ -54,12 +54,19 @@ function evaluateExpression(numbers, operators) {
 
 const part1 = (rawInput) => {
   const input = parseInput(rawInput)
-  const equations = splitRows(input).map(row => row.split(':').map(part => part.trim()).map(part => part.split(' ').map(num => parseInt(num))))
+  const equations = splitRows(input).map((row) =>
+    row
+      .split(":")
+      .map((part) => part.trim())
+      .map((part) => part.split(" ").map((num) => parseInt(num))),
+  )
   let numValid = 0
 
   for (const [ans, numbers] of equations) {
     const target = ans[0]
-    const operatorCombinations = generateOperatorCombinations(numbers.length - 1)
+    const operatorCombinations = generateOperatorCombinations(
+      numbers.length - 1,
+    )
     for (const operators of operatorCombinations) {
       if (evaluateExpression(numbers, operators) === target) {
         numValid += target
@@ -73,12 +80,20 @@ const part1 = (rawInput) => {
 
 const part2 = (rawInput) => {
   const input = parseInput(rawInput)
-  const equations = splitRows(input).map(row => row.split(':').map(part => part.trim()).map(part => part.split(' ').map(num => parseInt(num))))
+  const equations = splitRows(input).map((row) =>
+    row
+      .split(":")
+      .map((part) => part.trim())
+      .map((part) => part.split(" ").map((num) => parseInt(num))),
+  )
   let numValid = 0
 
   for (const [ans, numbers] of equations) {
     const target = ans[0]
-    const operatorCombinations = generateOperatorCombinations(numbers.length - 1, 2)
+    const operatorCombinations = generateOperatorCombinations(
+      numbers.length - 1,
+      2,
+    )
     for (const operators of operatorCombinations) {
       if (evaluateExpression(numbers, operators) === target) {
         numValid += target
@@ -110,18 +125,18 @@ run({
   },
   part2: {
     tests: [
-//       {
-//         input: `190: 10 19
-// 3267: 81 40 27
-// 83: 17 5
-// 156: 15 6
-// 7290: 6 8 6 15
-// 161011: 16 10 13
-// 192: 17 8 14
-// 21037: 9 7 18 13
-// 292: 11 6 16 20`,
-//         expected: 11387,
-//       },
+      //       {
+      //         input: `190: 10 19
+      // 3267: 81 40 27
+      // 83: 17 5
+      // 156: 15 6
+      // 7290: 6 8 6 15
+      // 161011: 16 10 13
+      // 192: 17 8 14
+      // 21037: 9 7 18 13
+      // 292: 11 6 16 20`,
+      //         expected: 11387,
+      //       },
       {
         input: `156: 15 6`,
         expected: 156,

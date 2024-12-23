@@ -1,62 +1,83 @@
-import run from "aocrunner";
-import chalk from "chalk";
+import run from "aocrunner"
+import chalk from "chalk"
 
-const lineRegex = /p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)/;
+const lineRegex = /p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)/
 
-const MAP_WIDTH = 101;
-const MAP_HEIGHT = 103;
+const MAP_WIDTH = 101
+const MAP_HEIGHT = 103
 
-const parseInput = (rawInput) => rawInput.split('\n').map(line => {
-  const match = line.match(lineRegex);
-  return {
-    x: parseInt(match[1], 10),
-    y: parseInt(match[2], 10),
-    vx: parseInt(match[3], 10),
-    vy: parseInt(match[4], 10),
-  };
-});
+const parseInput = (rawInput) =>
+  rawInput.split("\n").map((line) => {
+    const match = line.match(lineRegex)
+    return {
+      x: parseInt(match[1], 10),
+      y: parseInt(match[2], 10),
+      vx: parseInt(match[3], 10),
+      vy: parseInt(match[4], 10),
+    }
+  })
 
-const mod = (a, b) => ((a % b) + b) % b;
+const mod = (a, b) => ((a % b) + b) % b
 
-function stepRobots(robots, width = MAP_WIDTH, height = MAP_HEIGHT, steps=1) {
-  robots.forEach(r => {
-    r.x = mod(r.x + r.vx * steps, width);
-    r.y = mod(r.y + r.vy * steps, height);
+function stepRobots(robots, width = MAP_WIDTH, height = MAP_HEIGHT, steps = 1) {
+  robots.forEach((r) => {
+    r.x = mod(r.x + r.vx * steps, width)
+    r.y = mod(r.y + r.vy * steps, height)
   })
 }
 
 function countQuadrants(robots, width = MAP_WIDTH, height = MAP_HEIGHT) {
-  const wHalf = Math.floor(width / 2);
-  const hHalf = Math.floor(height / 2);
+  const wHalf = Math.floor(width / 2)
+  const hHalf = Math.floor(height / 2)
 
-  let ret = 1;
-  const xStarts = [0, wHalf + 1];
-  const yStarts = [0, hHalf + 1];
+  let ret = 1
+  const xStarts = [0, wHalf + 1]
+  const yStarts = [0, hHalf + 1]
 
   for (const startX of xStarts) {
     for (const startY of yStarts) {
-      let count = 0;
+      let count = 0
       for (const r of robots) {
-        if (r.x >= startX && r.x < startX + wHalf &&
-          r.y >= startY && r.y < startY + hHalf) {
-          count++;
+        if (
+          r.x >= startX &&
+          r.x < startX + wHalf &&
+          r.y >= startY &&
+          r.y < startY + hHalf
+        ) {
+          count++
         }
       }
-      ret *= count;
+      ret *= count
     }
   }
 
-  return ret;
+  return ret
 }
 
-const visualize = (robots, positions, width = MAP_WIDTH, height = MAP_HEIGHT) => {
-  const grid = Array.from({ length: height }, () => Array.from({ length: width }, () => '.'));
+const visualize = (
+  robots,
+  positions,
+  width = MAP_WIDTH,
+  height = MAP_HEIGHT,
+) => {
+  const grid = Array.from({ length: height }, () =>
+    Array.from({ length: width }, () => "."),
+  )
   for (const r of robots) {
-    grid[r.y][r.x] = '#';
+    grid[r.y][r.x] = "#"
   }
 
   for (const r of robots) {
-    const neighbors = [[r.x + 1, r.y], [r.x - 1, r.y], [r.x, r.y + 1], [r.x, r.y - 1], [r.x + 1, r.y + 1], [r.x - 1, r.y - 1], [r.x + 1, r.y - 1], [r.x - 1, r.y + 1]];
+    const neighbors = [
+      [r.x + 1, r.y],
+      [r.x - 1, r.y],
+      [r.x, r.y + 1],
+      [r.x, r.y - 1],
+      [r.x + 1, r.y + 1],
+      [r.x - 1, r.y - 1],
+      [r.x + 1, r.y - 1],
+      [r.x - 1, r.y + 1],
+    ]
     let neighbor_count = 0
     for (const [nx, ny] of neighbors) {
       if (positions.has(`${nx},${ny}`)) {
@@ -64,45 +85,47 @@ const visualize = (robots, positions, width = MAP_WIDTH, height = MAP_HEIGHT) =>
       }
     }
     if (neighbor_count > 1) {
-      grid[r.y][r.x] = 'O';
+      grid[r.y][r.x] = "O"
     }
   }
 
   const colors = {
-    '#': chalk.red,
-    '.': chalk.gray,
-    'O': chalk.greenBright,
+    "#": chalk.red,
+    ".": chalk.gray,
+    O: chalk.greenBright,
   }
 
-  return grid.map(row => row.map(cell => colors[cell](cell)).join('')).join('\n');
+  return grid
+    .map((row) => row.map((cell) => colors[cell](cell)).join(""))
+    .join("\n")
 }
 
 function part1(rawInput) {
-  const robots = parseInput(rawInput);
-  const width = robots.length === 12 ? 11 : MAP_WIDTH;
-  const height = robots.length === 12 ? 7 : MAP_HEIGHT;
-  stepRobots(robots, width, height, 100);
+  const robots = parseInput(rawInput)
+  const width = robots.length === 12 ? 11 : MAP_WIDTH
+  const height = robots.length === 12 ? 7 : MAP_HEIGHT
+  stepRobots(robots, width, height, 100)
 
-  return countQuadrants(robots, width, height);
+  return countQuadrants(robots, width, height)
 }
 
 function part2(rawInput) {
-  const robots = parseInput(rawInput);
-  let stepCount = 0;
+  const robots = parseInput(rawInput)
+  let stepCount = 0
 
   while (true) {
-    stepCount++;
-    stepRobots(robots);
+    stepCount++
+    stepRobots(robots)
 
-    const positions = new Set();
+    const positions = new Set()
     for (const r of robots) {
-      positions.add(`${r.x},${r.y}`);
+      positions.add(`${r.x},${r.y}`)
     }
 
     if (positions.size === robots.length) {
       // console.log(`Found solution after ${stepCount} steps`)
       // console.log(visualize(robots, positions));
-      return stepCount;
+      return stepCount
     }
   }
 }
@@ -136,4 +159,4 @@ p=9,5 v=-3,-3`,
   },
   trimTestInputs: true,
   onlyTests: false,
-});
+})

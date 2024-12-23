@@ -1,11 +1,16 @@
 import run from "aocrunner"
 
-const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+const dirs = [
+  [1, 0],
+  [-1, 0],
+  [0, 1],
+  [0, -1],
+]
 
-const parseInput = rawInput => {
+const parseInput = (rawInput) => {
   const grid = new Map()
   rawInput.split("\n").forEach((line, y) => {
-    [...line].forEach((char, x) => {
+    ;[...line].forEach((char, x) => {
       if (/[A-Z]/.test(char)) grid.set(`${x},${y}`, char)
     })
   })
@@ -15,13 +20,22 @@ const parseInput = rawInput => {
 const floodFill = (grid, start) => {
   const region = new Set([start])
   const queue = [start]
-  const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+  const dirs = [
+    [1, 0],
+    [-1, 0],
+    [0, 1],
+    [0, -1],
+  ]
   const symbol = grid.get(start)
   while (queue.length) {
     const [x, y] = queue.pop().split(",").map(Number)
     for (const [dx, dy] of dirs) {
       const nextPos = `${x + dx},${y + dy}`
-      if (grid.has(nextPos) && !region.has(nextPos) && grid.get(nextPos) === symbol) {
+      if (
+        grid.has(nextPos) &&
+        !region.has(nextPos) &&
+        grid.get(nextPos) === symbol
+      ) {
         region.add(nextPos)
         queue.push(nextPos)
       }
@@ -30,7 +44,7 @@ const floodFill = (grid, start) => {
   return region
 }
 
-const getPerimeter = region => {
+const getPerimeter = (region) => {
   const edges = new Set()
   for (const pos of region) {
     const [x, y] = pos.split(",").map(Number)
@@ -42,7 +56,7 @@ const getPerimeter = region => {
   return edges
 }
 
-const getSidesCount = region => {
+const getSidesCount = (region) => {
   const edges = getPerimeter(region)
   let sideCount = 0
   while (edges.size) {
@@ -51,7 +65,9 @@ const getSidesCount = region => {
     edges.delete(edge)
     sideCount++
     const [px, py] = pos.split(",").map(Number)
-    let nx = px - dy, ny = py + dx, key = JSON.stringify([`${nx},${ny}`, dx, dy])
+    let nx = px - dy,
+      ny = py + dx,
+      key = JSON.stringify([`${nx},${ny}`, dx, dy])
     while (edges.has(key)) {
       edges.delete(key)
       nx = nx - dy
@@ -82,7 +98,10 @@ const solve = (rawInput, part) => {
     regions.push(region)
   }
   let total = 0
-  for (const region of regions) total += region.size * (part === 1 ? getPerimeter(region).size : getSidesCount(region))
+  for (const region of regions)
+    total +=
+      region.size *
+      (part === 1 ? getPerimeter(region).size : getSidesCount(region))
   return total
 }
 

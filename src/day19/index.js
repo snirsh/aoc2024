@@ -1,27 +1,31 @@
 import run from "aocrunner"
 
 const parseInput = (rawInput) => {
-  const [patterns, designs] = rawInput.split('\n\n')
+  const [patterns, designs] = rawInput.split("\n\n")
   return {
-    patterns: patterns.split(', '),
-    designs: designs.trim().split('\n')
+    patterns: patterns.split(", "),
+    designs: designs.trim().split("\n"),
   }
 }
 
 const createPatternMatcher = (shouldCountAll = false) => {
   const matchPattern = (design, availablePatterns, cache = new Map()) => {
-    if (design === '') {
+    if (design === "") {
       return shouldCountAll ? 1 : true
     }
-    
+
     if (!cache.has(design)) {
       let matchResult = shouldCountAll ? 0 : false
-      
+
       for (const pattern of availablePatterns) {
         if (design.startsWith(pattern)) {
           const remainingDesign = design.slice(pattern.length)
-          const subPatternResult = matchPattern(remainingDesign, availablePatterns, cache)
-          
+          const subPatternResult = matchPattern(
+            remainingDesign,
+            availablePatterns,
+            cache,
+          )
+
           if (shouldCountAll) {
             matchResult += subPatternResult
           } else if (subPatternResult) {
@@ -30,12 +34,12 @@ const createPatternMatcher = (shouldCountAll = false) => {
           }
         }
       }
-      
+
       cache.set(design, matchResult)
     }
     return cache.get(design)
   }
-  
+
   return matchPattern
 }
 
@@ -43,7 +47,7 @@ const part1 = (rawInput) => {
   const input = parseInput(rawInput)
 
   return input.designs.reduce((count, design) => {
-    return count + (+createPatternMatcher(false)(design, input.patterns))
+    return count + +createPatternMatcher(false)(design, input.patterns)
   }, 0)
 }
 

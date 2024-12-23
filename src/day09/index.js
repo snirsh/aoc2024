@@ -72,7 +72,10 @@ const part1 = (rawInput) => {
   }
 
   const newArr = []
-  const totalBlocks = disk.reduce((count, block) => (block !== null ? count + 1 : count), 0)
+  const totalBlocks = disk.reduce(
+    (count, block) => (block !== null ? count + 1 : count),
+    0,
+  )
 
   while (newArr.length < totalBlocks) {
     if (disk[i] !== null) {

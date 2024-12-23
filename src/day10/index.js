@@ -1,8 +1,14 @@
 import run from "aocrunner"
 
-const parseInput = (rawInput) => rawInput.split("\n").map(row => row.split("").map(Number))
+const parseInput = (rawInput) =>
+  rawInput.split("\n").map((row) => row.split("").map(Number))
 
-const COORDS = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+const COORDS = [
+  [0, 1],
+  [1, 0],
+  [0, -1],
+  [-1, 0],
+]
 
 const findAllTrailHeads = (matrix) => {
   const trailHeads = []
@@ -18,15 +24,17 @@ const findAllTrailHeads = (matrix) => {
 
 const getValidNeighbors = (matrix, currentCord) => {
   const coordVal = matrix[currentCord[0]][currentCord[1]]
-  return COORDS
-    .map(([x, y]) => ([currentCord[0] + x, currentCord[1] + y]))
-    .filter(([x, y]) =>
+  return COORDS.map(([x, y]) => [
+    currentCord[0] + x,
+    currentCord[1] + y,
+  ]).filter(
+    ([x, y]) =>
       x < matrix.length &&
       x >= 0 &&
       y < matrix[0].length &&
       y >= 0 &&
-      matrix[x][y] === coordVal + 1
-    )
+      matrix[x][y] === coordVal + 1,
+  )
 }
 
 const findTrail = (matrix, start) => {
@@ -59,7 +67,10 @@ const part1 = (rawInput) => {
   const input = parseInput(rawInput)
   const trailHeads = findAllTrailHeads(input)
 
-  return trailHeads.reduce((acc, trailHead) => acc + findTrail(input, trailHead), 0)
+  return trailHeads.reduce(
+    (acc, trailHead) => acc + findTrail(input, trailHead),
+    0,
+  )
 }
 
 const part2 = (rawInput) => {
@@ -78,8 +89,10 @@ const part2 = (rawInput) => {
       return 1
     }
 
-    return getValidNeighbors(matrix, [x, y])
-      .reduce((acc, [dx, dy]) => acc + dfs(dx, dy), 0)
+    return getValidNeighbors(matrix, [x, y]).reduce(
+      (acc, [dx, dy]) => acc + dfs(dx, dy),
+      0,
+    )
   }
 
   return findAllTrailHeads(matrix).reduce((acc, [x, y]) => acc + dfs(x, y), 0)
@@ -134,7 +147,7 @@ run({
 01329801
 10456732`,
         expected: 81,
-      }
+      },
     ],
     solution: part2,
   },

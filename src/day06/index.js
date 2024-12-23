@@ -5,10 +5,10 @@ const parseInput = (rawInput) => rawInput.split("\n")
 
 const DIRECTIONS = ["U", "R", "D", "L"]
 const DIR_TO_COORD = {
-  "U": [-1, 0],
-  "R": [0, 1],
-  "D": [1, 0],
-  "L": [0, -1],
+  U: [-1, 0],
+  R: [0, 1],
+  D: [1, 0],
+  L: [0, -1],
 }
 
 function turnRight(dir) {
@@ -57,7 +57,9 @@ function simulate(grid, startPos, startDir, obstruction, visualize = true) {
       pos = nextPos
       const stateKey = `${pos[0]},${pos[1]},${dir}`
       if (visitedStates.has(stateKey)) {
-        visualize? console.log(visualizeRun(grid, path, obstruction), '\n') : null
+        visualize
+          ? console.log(visualizeRun(grid, path, obstruction), "\n")
+          : null
         return true
       }
       visitedStates.add(stateKey)
@@ -67,7 +69,7 @@ function simulate(grid, startPos, startDir, obstruction, visualize = true) {
 
 const part1 = (rawInput, visualize = false) => {
   const input = parseInput(rawInput)
-  const grid = input.map(row => row.split(''))
+  const grid = input.map((row) => row.split(""))
 
   const startPos = findGuardStart(grid)
   let startDir = "U"
@@ -101,7 +103,7 @@ const part1 = (rawInput, visualize = false) => {
   }
 
   if (visualize) {
-    console.log(visualizeRun(grid, path), '\n')
+    console.log(visualizeRun(grid, path), "\n")
   }
 
   return visitedPositions.size
@@ -109,7 +111,7 @@ const part1 = (rawInput, visualize = false) => {
 
 const part2 = (rawInput, visualize = false) => {
   const input = parseInput(rawInput)
-  const grid = input.map(row => row.split(''))
+  const grid = input.map((row) => row.split(""))
 
   const startPos = findGuardStart(grid)
   const startDir = "U"
@@ -117,7 +119,7 @@ const part2 = (rawInput, visualize = false) => {
   const candidates = []
   for (let r = 0; r < grid.length; r++) {
     for (let c = 0; c < grid[r].length; c++) {
-      if (grid[r][c] === '.' && !(r === startPos[0] && c === startPos[1])) {
+      if (grid[r][c] === "." && !(r === startPos[0] && c === startPos[1])) {
         candidates.push([r, c])
       }
     }
@@ -128,7 +130,7 @@ const part2 = (rawInput, visualize = false) => {
   for (const cand of candidates) {
     const [cr, cc] = cand
     const original = grid[cr][cc]
-    grid[cr][cc] = '#'
+    grid[cr][cc] = "#"
 
     const isLoop = simulate(grid, startPos, startDir, [cr, cc], visualize)
 
@@ -144,8 +146,9 @@ const part2 = (rawInput, visualize = false) => {
 
 run({
   part1: {
-    tests: [{
-      input: `....#.....
+    tests: [
+      {
+        input: `....#.....
 .........#
 ..........
 ..#.......
@@ -154,12 +157,16 @@ run({
 .#..^.....
 ........#.
 #.........
-......#...`, expected: 41,
-    }], solution: part1,
+......#...`,
+        expected: 41,
+      },
+    ],
+    solution: part1,
   },
   part2: {
-    tests: [{
-      input: `....#.....
+    tests: [
+      {
+        input: `....#.....
 .........#
 ..........
 ..#.......
@@ -168,8 +175,11 @@ run({
 .#..^.....
 ........#.
 #.........
-......#...`, expected: 6,
-    }], solution: part2,
+......#...`,
+        expected: 6,
+      },
+    ],
+    solution: part2,
   },
   trimTestInputs: true,
   onlyTests: true,

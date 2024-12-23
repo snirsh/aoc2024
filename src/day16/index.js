@@ -8,7 +8,11 @@ const DIRECTIONS = [
   { dx: 0, dy: -1 },
 ]
 
-const parseInput = (rawInput) => rawInput.trim().split("\n").map(line => line.split(""))
+const parseInput = (rawInput) =>
+  rawInput
+    .trim()
+    .split("\n")
+    .map((line) => line.split(""))
 
 const findPos = (grid, char) => {
   for (let y = 0; y < grid.length; y++) {
@@ -20,7 +24,13 @@ const findPos = (grid, char) => {
 }
 
 const isWalkable = (grid, x, y) => {
-  return x >= 0 && x < grid[0].length && y >= 0 && y < grid.length && grid[y][x] !== "#"
+  return (
+    x >= 0 &&
+    x < grid[0].length &&
+    y >= 0 &&
+    y < grid.length &&
+    grid[y][x] !== "#"
+  )
 }
 
 const createStateKey = (x, y, d) => `${x},${y},${d}`
@@ -87,21 +97,24 @@ const findSingleShortestPath = (grid, start, end) => {
   const cols = grid[0].length
 
   const dist = Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () =>
-      Array(4).fill(Infinity)
-    )
+    Array.from({ length: cols }, () => Array(4).fill(Infinity)),
   )
 
   const prev = Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () =>
-      Array(4).fill(null)
-    )
+    Array.from({ length: cols }, () => Array(4).fill(null)),
   )
 
   const pq = []
   for (let i = 0; i < DIRECTIONS.length; i++) {
     dist[start.y][start.x][i] = 0
-    pq.push({ x: start.x, y: start.y, dirIndex: i, cost: 0, steps: 0, dirChanges: 0 })
+    pq.push({
+      x: start.x,
+      y: start.y,
+      dirIndex: i,
+      cost: 0,
+      steps: 0,
+      dirChanges: 0,
+    })
   }
 
   while (pq.length > 0) {
@@ -120,7 +133,7 @@ const findSingleShortestPath = (grid, start, end) => {
       const ny = y + dy
       if (!isWalkable(grid, nx, ny)) continue
 
-      const newDirChanges = (nd === dirIndex) ? dirChanges : (dirChanges + 1)
+      const newDirChanges = nd === dirIndex ? dirChanges : dirChanges + 1
       const newSteps = steps + 1
       const newCost = newSteps + newDirChanges * DIRECTION_CHANGE_COST
 
@@ -133,7 +146,7 @@ const findSingleShortestPath = (grid, start, end) => {
           dirIndex: nd,
           cost: newCost,
           steps: newSteps,
-          dirChanges: newDirChanges
+          dirChanges: newDirChanges,
         })
       }
     }
@@ -183,7 +196,7 @@ const calculateScore = (path) => {
     prevDir = currentDir
   }
 
-  return (path.length - 1) + dirChanges * DIRECTION_CHANGE_COST
+  return path.length - 1 + dirChanges * DIRECTION_CHANGE_COST
 }
 
 const getAllShortestPathTiles = (visited, grid, start, end, minEndCost) => {
@@ -208,7 +221,11 @@ const getAllShortestPathTiles = (visited, grid, start, end, minEndCost) => {
     if (isWalkable(grid, px, py)) {
       const prevCost = currentCost - 1
       const prevKey = createStateKey(px, py, d)
-      if (prevCost >= 0 && visited.get(prevKey) === prevCost && !onShortestPath.has(prevKey)) {
+      if (
+        prevCost >= 0 &&
+        visited.get(prevKey) === prevCost &&
+        !onShortestPath.has(prevKey)
+      ) {
         onShortestPath.add(prevKey)
         queue.push({ x: px, y: py, d })
       }
@@ -227,10 +244,10 @@ const getAllShortestPathTiles = (visited, grid, start, end, minEndCost) => {
   }
 
   const tiles = new Set(
-    Array.from(onShortestPath).map(s => {
+    Array.from(onShortestPath).map((s) => {
       const [sx, sy] = s.split(",").map(Number)
       return `${sx},${sy}`
-    })
+    }),
   )
 
   return tiles.size

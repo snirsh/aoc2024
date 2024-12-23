@@ -6,15 +6,15 @@ const isRowSafe = (row) => {
   let safe = true
   let desc = false
   let asc = false
-  for (let i=0; i<row.length-1; i++) {
-    if(row[i] < row[i+1]) {
+  for (let i = 0; i < row.length - 1; i++) {
+    if (row[i] < row[i + 1]) {
       if (desc) {
         safe = false
         break
       } else {
         asc = true
       }
-    } else if (row[i] > row[i+1]) {
+    } else if (row[i] > row[i + 1]) {
       if (asc) {
         safe = false
         break
@@ -22,7 +22,7 @@ const isRowSafe = (row) => {
         desc = true
       }
     }
-    const currentDiff = Math.abs(row[i+1] - row[i])
+    const currentDiff = Math.abs(row[i + 1] - row[i])
     if (currentDiff < 1 || currentDiff > 3) {
       safe = false
       break
@@ -31,12 +31,13 @@ const isRowSafe = (row) => {
   return safe
 }
 
-
 const part1 = (rawInput) => {
   const input = parseInput(rawInput)
-  const rows = input.split('\n').map(row => row.split(/\s+/).map(val => parseInt(val)))
+  const rows = input
+    .split("\n")
+    .map((row) => row.split(/\s+/).map((val) => parseInt(val)))
   let safeRows = 0
-  for (const row of rows){
+  for (const row of rows) {
     if (isRowSafe(row)) {
       safeRows++
     }
@@ -46,15 +47,17 @@ const part1 = (rawInput) => {
 
 const part2 = (rawInput) => {
   const input = parseInput(rawInput)
-  const rows = input.split('\n').map(row => row.split(/\s+/).map(val => parseInt(val)))
+  const rows = input
+    .split("\n")
+    .map((row) => row.split(/\s+/).map((val) => parseInt(val)))
   let safeRows = 0
-  for (const row of rows){
+  for (const row of rows) {
     if (isRowSafe(row)) {
       safeRows++
       continue
     }
     const permutations = []
-    for (let i=0; i<row.length; i++) {
+    for (let i = 0; i < row.length; i++) {
       const copy = [...row]
       copy.splice(i, 1)
       permutations.push([copy, row[i]])
@@ -64,7 +67,7 @@ const part2 = (rawInput) => {
       if (isRowSafe(perm)) {
         validPermutations++
         safeRows++
-        break;
+        break
       }
     }
   }
@@ -99,8 +102,8 @@ run({
       },
       {
         input: `51, 50, 47, 44, 42, 40, 38, 38`,
-        expected: 1
-      }
+        expected: 1,
+      },
     ],
     solution: part2,
   },
