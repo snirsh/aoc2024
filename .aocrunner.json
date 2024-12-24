@@ -385,15 +385,15 @@
     {
       "part1": {
         "solved": false,
-        "result": null,
+        "result": "52728619468518",
         "attempts": [],
-        "time": null
+        "time": 1.204083
       },
       "part2": {
         "solved": false,
-        "result": null,
+        "result": "dck,fgn,nvh,qdg,vvf,z12,z19,z37",
         "attempts": [],
-        "time": null
+        "time": 7.973667
       }
     },
     {
