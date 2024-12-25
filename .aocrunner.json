@@ -399,15 +399,15 @@
     {
       "part1": {
         "solved": false,
-        "result": null,
+        "result": "22750",
         "attempts": [],
-        "time": null
+        "time": 19.879583
       },
       "part2": {
         "solved": false,
-        "result": null,
+        "result": "Merry Christmas! 🎄",
         "attempts": [],
-        "time": null
+        "time": 0.007709
       }
     }
   ]
