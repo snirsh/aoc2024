@@ -55,7 +55,6 @@ const runDijkstra = (grid, start, end) => {
     const currentKey = createStateKey(x, y, d)
     if (visited.get(currentKey) < cost) continue
 
-    // Try moving forward
     const nx = x + DIRECTIONS[d].dy
     const ny = y + DIRECTIONS[d].dx
     if (isWalkable(grid, nx, ny)) {
@@ -68,7 +67,6 @@ const runDijkstra = (grid, start, end) => {
       }
     }
 
-    // Try turning left or right
     for (const nd of [(d + 1) % 4, (d + 3) % 4]) {
       const turnCost = cost + DIRECTION_CHANGE_COST
       const turnKey = createStateKey(x, y, nd)
@@ -80,7 +78,6 @@ const runDijkstra = (grid, start, end) => {
     }
   }
 
-  // Find minimum cost to reach end
   let minEndCost = Infinity
   for (let d = 0; d < DIRECTIONS.length; d++) {
     const endCost = visited.get(createStateKey(end.x, end.y, d))
@@ -215,7 +212,6 @@ const getAllShortestPathTiles = (visited, grid, start, end, minEndCost) => {
     const { x, y, d } = queue.shift()
     const currentCost = visited.get(createStateKey(x, y, d))
 
-    // Check previous position
     const px = x - DIRECTIONS[d].dy
     const py = y - DIRECTIONS[d].dx
     if (isWalkable(grid, px, py)) {

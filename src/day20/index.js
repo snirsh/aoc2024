@@ -121,9 +121,7 @@ run({
     solution: part1,
   },
   part2: {
-    tests: [
-      // Add tests here
-    ],
+    // tests:[],
     solution: part2,
   },
   trimTestInputs: true,
