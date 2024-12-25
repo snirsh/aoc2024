@@ -230,16 +230,16 @@ Both parts: 540.616ms
 
 ```
 Day 24
-Time part 1: -
-Time part 2: -
-Both parts: -
+Time part 1: 1.204ms
+Time part 2: 7.974ms
+Both parts: 9.178ms
 ```
 
 ```
 Day 25
-Time part 1: -
-Time part 2: -
-Both parts: -
+Time part 1: 19.879ms
+Time part 2: 0.008ms
+Both parts: 19.887ms
 ```
 
 ```
