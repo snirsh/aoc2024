@@ -1,17 +1,21 @@
 import run from "aocrunner"
 
 const parseInput = (rawInput) => {
-  const segments = rawInput.split('\n\n')
-  const patterns = segments.map(seg => seg.split('\n').map(line => line.split('')))
+  const segments = rawInput.split("\n\n")
+  const patterns = segments.map((seg) =>
+    seg.split("\n").map((line) => line.split("")),
+  )
   const locks = []
   const keys = []
-  patterns.map(pattern => {
-    const isLock = pattern[0][0] === '#'
+  patterns.map((pattern) => {
+    const isLock = pattern[0][0] === "#"
     const cols = pattern[0].length
     const heights = []
     for (let i = 0; i < cols; i++) {
-      const column = pattern.map(row => row[i])
-      const height = isLock ? cols - column.reverse().findIndex(cell => cell === '#') + 1 : cols - column.findIndex(cell => cell === '#') + 1
+      const column = pattern.map((row) => row[i])
+      const height = isLock
+        ? cols - column.reverse().findIndex((cell) => cell === "#") + 1
+        : cols - column.findIndex((cell) => cell === "#") + 1
       heights.push(height)
     }
     if (isLock) {
