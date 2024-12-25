@@ -34,8 +34,8 @@
 [![Day](https://badgen.net/badge/21/%E2%98%85%E2%98%85/green)](src/day21)
 [![Day](https://badgen.net/badge/22/%E2%98%85%E2%98%85/green)](src/day22)
 [![Day](https://badgen.net/badge/23/%E2%98%85%E2%98%85/green)](src/day23)
-![Day](https://badgen.net/badge/24/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/25/%E2%98%86%E2%98%86/gray)
+[![Day](https://badgen.net/badge/24/%E2%98%85%E2%98%85/green)](src/day24)
+[![Day](https://badgen.net/badge/25/%E2%98%85%E2%98%85/green)](src/day25)
 
 <!--/SOLUTIONS-->
 
@@ -230,21 +230,21 @@ Both parts: 540.616ms
 
 ```
 Day 24
-Time part 1: 1.204ms
-Time part 2: 7.974ms
-Both parts: 9.178ms
+Time part 1: 1.741ms
+Time part 2: 7.922ms
+Both parts: 9.663ms
 ```
 
 ```
 Day 25
-Time part 1: 19.879ms
+Time part 1: 3.016ms
 Time part 2: 0.008ms
-Both parts: 19.887ms
+Both parts: 3.024ms
 ```
 
 ```
-Total stars: 46/50
-Total time: 28891.017ms
+Total stars: 50/50
+Total time: 28903.704ms
 ```
 
 <!--/RESULTS-->

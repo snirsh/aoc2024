@@ -387,27 +387,27 @@
         "solved": false,
         "result": "52728619468518",
         "attempts": [],
-        "time": 1.204083
+        "time": 1.740625
       },
       "part2": {
         "solved": false,
         "result": "dck,fgn,nvh,qdg,vvf,z12,z19,z37",
         "attempts": [],
-        "time": 7.973667
+        "time": 7.922459
       }
     },
     {
       "part1": {
         "solved": false,
-        "result": "22750",
+        "result": "3301",
         "attempts": [],
-        "time": 19.879583
+        "time": 3.016083
       },
       "part2": {
         "solved": false,
         "result": "Merry Christmas! 🎄",
         "attempts": [],
-        "time": 0.007709
+        "time": 0.008125
       }
     }
   ]
